@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="汇编语言实验三"><meta name="keywords" content="汇编语言"><meta name="author" content="Bag"><meta name="copyright" content="Bag"><title>汇编语言实验三 | BAG</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.1"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '6.3.0'
+} </script><meta name="generator" content="Hexo 6.3.0"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">编译原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BB%BB%E5%8A%A1"><span class="toc-number">2.</span> <span class="toc-text">实验任务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.1.</span> <span class="toc-text">生成程序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E5%86%99-asm"><span class="toc-number">2.1.1.</span> <span class="toc-text">编写.asm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91"><span class="toc-number">2.1.2.</span> <span class="toc-text">编译</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.1.3.</span> <span class="toc-text">连接</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E7%A8%8B%E5%BA%8F%E8%BF%9B%E8%A1%8Cdebug"><span class="toc-number">2.2.</span> <span class="toc-text">对程序进行debug</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BPSP%E5%86%85%E5%AE%B9"><span class="toc-number">2.3.</span> <span class="toc-text">查看PSP内容</span></a></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="/img/jill.jpg"></div><div class="author-info__name text-center">Bag</div><div class="author-info__description text-center">A rolling stone gathers no moss.</div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">6</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">4</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">4</span></a></div></div></div><div id="content-outer"><div class="no-bg" id="top-container"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">BAG</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right"></span></div><div id="post-info"><div id="post-title">汇编语言实验三</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2024-01-30</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E7%8E%8B%E7%88%BD%E3%80%8A%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E3%80%8B%E5%AE%9E%E9%AA%8C/">王爽《汇编语言》实验</a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><p>王爽《汇编语言》实验三</p>
+<span id="more"></span>
+
+<h2 id="编译原理"><a href="#编译原理" class="headerlink" title="编译原理"></a>编译原理</h2><p>源程序（.asm） -&gt; 目标文件（.obj） -&gt; 程序（.exe）</p>
+<h2 id="实验任务"><a href="#实验任务" class="headerlink" title="实验任务"></a>实验任务</h2><h3 id="生成程序"><a href="#生成程序" class="headerlink" title="生成程序"></a>生成程序</h3><h4 id="编写-asm"><a href="#编写-asm" class="headerlink" title="编写.asm"></a>编写.asm</h4><p>由于我的dosbox没有edit.exe，先按照以下教程配置edit</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Ghost_jzy/article/details/104572876">如何解决DOSBox 0.74无法运行edit指令_dosbox edit.exe-CSDN博客</a></p>
+<p>进入DOS方式，运行Edit</p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130193959780.png" class="" title="image-20240130193959780">
+
+<p>在edit界面编写.asm文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line">codesg segment</span><br><span class="line">	mov ax,2000H</span><br><span class="line">	mov ss,ax</span><br><span class="line">	mov sp,0</span><br><span class="line">	add sp,10</span><br><span class="line">	pop ax</span><br><span class="line">	pop bx</span><br><span class="line">	push ax</span><br><span class="line">	push bx</span><br><span class="line">	pop ax</span><br><span class="line">	pop bx</span><br><span class="line">	</span><br><span class="line">	mov ax,4c00H</span><br><span class="line">	int 21H</span><br><span class="line">	codesg ends</span><br><span class="line">	</span><br><span class="line">	end</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130194232802.png" class="" title="image-20240130194232802">
+
+<p>将文件保存为.asm后缀</p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130194333887.png" class="" title="image-20240130194333887">
+
+<p>点击左上角file中的exit，退出edit</p>
+<h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><p>进入masm目录</p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130194518161.png" class="" title="image-20240130194518161">
+
+<p>输入编译的文件名，一路回车</p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130194549353.png" class="" title="image-20240130194549353">
+
+<p>可以在masm目录下查看生成的.obj文件</p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130195053047.png" class="" title="image-20240130195053047">
+
+
+
+<h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><p>在masm目录下运行link.exe</p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130195731394.png" class="" title="image-20240130195731394">
+
+<p>在masm目录下可见生成的.exe</p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130195817763.png" class="" title="image-20240130195817763">
+
+
+
+
+
+<h3 id="对程序进行debug"><a href="#对程序进行debug" class="headerlink" title="对程序进行debug"></a>对程序进行debug</h3><p>进入debug，按R查看寄存器</p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130200028983.png" class="" title="image-20240130200028983">
+
+<p>按u查看exe中全部指令</p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130200137144.png" class="" title="image-20240130200137144">
+
+<p>按t追踪每一条指令执行过程</p>
+<p><strong>注意：要使用p指令执行int 21</strong></p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130200425978.png" class="" title="image-20240130200425978">
+
+<p>使用q指令退出debug，返回command</p>
+<h3 id="查看PSP内容"><a href="#查看PSP内容" class="headerlink" title="查看PSP内容"></a>查看PSP内容</h3><p>查看<strong>DS</strong>的地址，来到该地址，发现 <strong>PSP</strong> 的头两个字节确实是 <strong>CD 20</strong></p>
+<img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130200906574.png" class="" title="image-20240130200906574">
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Bag</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://liquor-vague.github.io/2024/01/30/Assembly-Language-Experiment-3/">http://liquor-vague.github.io/2024/01/30/Assembly-Language-Experiment-3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">汇编语言</a></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2024/02/18/2023-ciscn-wp/"><i class="fa fa-chevron-left">  </i><span>2023ciscn-wp</span></a></div><div class="next-post pull-right"><a href="/2024/01/15/ollvm-build/"><span>OLLVM混淆环境搭建与去平坦化</span><i class="fa fa-chevron-right"></i></a></div></nav></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2024 By Bag</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/lib/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.1"></script><script src="/js/fancybox.js?version=1.9.1"></script><script src="/js/sidebar.js?version=1.9.1"></script><script src="/js/copy.js?version=1.9.1"></script><script src="/js/fireworks.js?version=1.9.1"></script><script src="/js/transition.js?version=1.9.1"></script><script src="/js/scroll.js?version=1.9.1"></script><script src="/js/head.js?version=1.9.1"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script></body></html>
