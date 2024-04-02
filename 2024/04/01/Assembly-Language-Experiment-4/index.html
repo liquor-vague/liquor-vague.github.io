@@ -27,7 +27,7 @@
 
 
 
-<h2 id="（3）"><a href="#（3）" class="headerlink" title="（3）"></a>（3）</h2><p>1.此处将ds置为cs，即<code>mov as,cs</code>。（其实我感觉存什么并不重要，因为后面没用上ds）</p>
+<h2 id="（3）"><a href="#（3）" class="headerlink" title="（3）"></a>（3）</h2><p>1.此处将ds置为cs，即<code>mov ax,cs</code>。（这里设是因为后面<code>mov al,[bx]</code>是默认ds:[bx]）</p>
 <p>2.可以先将此空置为空，<strong>启用debug模式调试程序，在进入后的cx中可知程序的字节数</strong>（书p91）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax,cs</span><br><span class="line">	mov ds,ax</span><br><span class="line">	mov ax,0020h</span><br><span class="line">	mov es,ax</span><br><span class="line">	mov bx,0</span><br><span class="line">	mov cx,0				;此处填0相当于留空</span><br><span class="line"> s: mov al,[bx]</span><br><span class="line">	mov es:[bx],al</span><br><span class="line">	inc bx</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov ax,4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
 
