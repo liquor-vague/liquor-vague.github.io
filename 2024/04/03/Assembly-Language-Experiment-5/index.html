@@ -157,7 +157,33 @@
 <span id="more"></span>
 
 <h2 id="（1）"><a href="#（1）" class="headerlink" title="（1）"></a>（1）</h2><p>源程序</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">assume cs:code,ds:data,ss:stack</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">	dw 0123h,0456h,0789h,0abch,0defh,0fedh,0cbah,0987h</span><br><span class="line">data ends</span><br><span class="line">stack segment</span><br><span class="line">	dw 0,0,0,0,0,0,0,0</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line"></span><br><span class="line"> start: mov ax,stack</span><br><span class="line">		mov ss,ax</span><br><span class="line">		mov sp,16</span><br><span class="line">		</span><br><span class="line">		mov ax,data</span><br><span class="line">		mov ds,ax</span><br><span class="line">		</span><br><span class="line">		push ds:[0]</span><br><span class="line">		push ds:[2]</span><br><span class="line">		pop ds:[2]</span><br><span class="line">		pop ds:[0]</span><br><span class="line"></span><br><span class="line">		mov ax,4c00h</span><br><span class="line">		int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<pre class="language-assembly" data-language="assembly"><code class="language-assembly">assume cs:code,ds:data,ss:stack
+
+data segment
+	dw 0123h,0456h,0789h,0abch,0defh,0fedh,0cbah,0987h
+data ends
+stack segment
+	dw 0,0,0,0,0,0,0,0
+stack ends
+
+code segment
+
+ start: mov ax,stack
+		mov ss,ax
+		mov sp,16
+		
+		mov ax,data
+		mov ds,ax
+		
+		push ds:[0]
+		push ds:[2]
+		pop ds:[2]
+		pop ds:[0]
+
+		mov ax,4c00h
+		int 21h
+code ends
+end start</code></pre>
 
 <p>按照前面说过的编译连接生成可执行程序。</p>
 <p>执行程序前，我们先查看data段保存在哪里？</p>
@@ -178,7 +204,33 @@
 <li>X-2，X-1</li>
 </ol>
 <h2 id="（2）"><a href="#（2）" class="headerlink" title="（2）"></a>（2）</h2><p>源程序（本程序与（1）的区别在于，（1）的栈是8words(16Bytes)，这个的栈是2words(4Bytes)）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">assume cs:code,ds:data,ss:stack</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">	dw 0123h,0456h</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">	dw 0,0</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:  mov ax,stack</span><br><span class="line">		mov ss,ax</span><br><span class="line">		mov sp,16</span><br><span class="line">		</span><br><span class="line">		mov ax,data</span><br><span class="line">		mov ds,ax</span><br><span class="line">		</span><br><span class="line">		push ds:[0]</span><br><span class="line">		push ds:[2]</span><br><span class="line">		pop ds:[2]</span><br><span class="line">		pop ds:[0]</span><br><span class="line">		</span><br><span class="line">		mov ax,4c00h</span><br><span class="line">		int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<pre class="language-assembly" data-language="assembly"><code class="language-assembly">assume cs:code,ds:data,ss:stack
+
+data segment
+	dw 0123h,0456h
+data ends
+
+stack segment
+	dw 0,0
+stack ends
+
+code segment
+start:  mov ax,stack
+		mov ss,ax
+		mov sp,16
+		
+		mov ax,data
+		mov ds,ax
+		
+		push ds:[0]
+		push ds:[2]
+		pop ds:[2]
+		pop ds:[0]
+		
+		mov ax,4c00h
+		int 21h
+code ends
+end start</code></pre>
 
 <p>查看运行前data段数据</p>
 <img src="/2024/04/03/Assembly-Language-Experiment-5/image-20240403232240950.png" class="" title="image-20240403232240950">
@@ -189,7 +241,33 @@
 <p>1-3答案和（1）相同</p>
 <p>4.若N%16&#x3D;&#x3D;0，则占用N个字节；否则占用<code>(N/16+1)*16</code>个字节</p>
 <h2 id="（3）"><a href="#（3）" class="headerlink" title="（3）"></a>（3）</h2><p>源程序（与（2）的区别在于它把数据和栈的定义放在了代码段后面）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">assume cs:code,ds:data,ss:stack</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:  mov ax,stack</span><br><span class="line">		mov ss,ax</span><br><span class="line">		mov sp,16</span><br><span class="line">		</span><br><span class="line">		mov ax,data</span><br><span class="line">		mov ds,ax</span><br><span class="line">		</span><br><span class="line">		push ds:[0]</span><br><span class="line">		push ds:[2]</span><br><span class="line">		pop ds:[2]</span><br><span class="line">		pop ds:[0]</span><br><span class="line">		</span><br><span class="line">		mov ax,4c00h</span><br><span class="line">		int 21h</span><br><span class="line">code ends</span><br><span class="line"></span><br><span class="line">data segment</span><br><span class="line">	dw 0123h,0456h</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">	dw 0,0</span><br><span class="line">stack ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<pre class="language-assembly" data-language="assembly"><code class="language-assembly">assume cs:code,ds:data,ss:stack
+
+code segment
+start:  mov ax,stack
+		mov ss,ax
+		mov sp,16
+		
+		mov ax,data
+		mov ds,ax
+		
+		push ds:[0]
+		push ds:[2]
+		pop ds:[2]
+		pop ds:[0]
+		
+		mov ax,4c00h
+		int 21h
+code ends
+
+data segment
+	dw 0123h,0456h
+data ends
+
+stack segment
+	dw 0,0
+stack ends
+end start</code></pre>
 
 <p>查看data中的数据，可见位于<code>075a:0130</code>处</p>
 <img src="/2024/04/03/Assembly-Language-Experiment-5/image-20240405113931179.png" class="" title="image-20240405113931179">
@@ -200,7 +278,53 @@
 
 
 <h2 id="（4）"><a href="#（4）" class="headerlink" title="（4）"></a>（4）</h2><p>只有（3）可以执行，因为不指明入口，程序会从加载进内存的第一个单元开始执行，在（1）（2）中定义的是数据，但CPU还是将数据当做指令代码执行了，程序执行时逻辑是错误的。</p>
-<h2 id="（5）"><a href="#（5）" class="headerlink" title="（5）"></a>（5）</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">a segment</span><br><span class="line">	db 1,2,3,4,5,6,7,8</span><br><span class="line">a ends</span><br><span class="line"></span><br><span class="line">b segment</span><br><span class="line">	db 1,2,3,4,5,6,7,8</span><br><span class="line">b ends</span><br><span class="line"></span><br><span class="line">c segment</span><br><span class="line">	db 0,0,0,0,0,0,0,0</span><br><span class="line">c ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">	mov ax,a</span><br><span class="line">	mov es,ax					;附加段</span><br><span class="line">	</span><br><span class="line">	mov ax,c</span><br><span class="line">	mov ds,ax</span><br><span class="line">	</span><br><span class="line">	mov bx,0</span><br><span class="line">	mov cx,8</span><br><span class="line">	</span><br><span class="line">s0:</span><br><span class="line">	mov ax,es:[bx]				;加a段的</span><br><span class="line">	add [bx],ax</span><br><span class="line">	add bx,2</span><br><span class="line">	loop s0</span><br><span class="line">	</span><br><span class="line">	mov ax,b</span><br><span class="line">	mov es,ax</span><br><span class="line">	</span><br><span class="line">	mov bx,0</span><br><span class="line">	mov cx,8</span><br><span class="line">s1:</span><br><span class="line">	mov ax,es:[bx]				;加b段的</span><br><span class="line">	add [bx],ax</span><br><span class="line">	add bx,2</span><br><span class="line">	loop s1</span><br><span class="line">	</span><br><span class="line">	mov ax,4c00h</span><br><span class="line">	int 21h</span><br><span class="line">	</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<h2 id="（5）"><a href="#（5）" class="headerlink" title="（5）"></a>（5）</h2><pre class="language-assembly" data-language="assembly"><code class="language-assembly">assume cs:code
+
+a segment
+	db 1,2,3,4,5,6,7,8
+a ends
+
+b segment
+	db 1,2,3,4,5,6,7,8
+b ends
+
+c segment
+	db 0,0,0,0,0,0,0,0
+c ends
+
+code segment
+start:
+	mov ax,a
+	mov es,ax					;附加段
+	
+	mov ax,c
+	mov ds,ax
+	
+	mov bx,0
+	mov cx,8
+	
+s0:
+	mov ax,es:[bx]				;加a段的
+	add [bx],ax
+	add bx,2
+	loop s0
+	
+	mov ax,b
+	mov es,ax
+	
+	mov bx,0
+	mov cx,8
+s1:
+	mov ax,es:[bx]				;加b段的
+	add [bx],ax
+	add bx,2
+	loop s1
+	
+	mov ax,4c00h
+	int 21h
+	
+code ends
+end start</code></pre>
 
 <p>程序执行前查看a,b,c段的数据</p>
 <img src="/2024/04/03/Assembly-Language-Experiment-5/image-20240405142857716.png" class="" title="image-20240405142857716">
@@ -211,11 +335,42 @@
 
 
 <h2 id="（6）"><a href="#（6）" class="headerlink" title="（6）"></a>（6）</h2><p>直接把b段当作栈结构即可</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">a segment</span><br><span class="line">	db 1,2,3,4,5,6,7,8,9,0ah,0bh,0ch,0dh,0eh,0fh</span><br><span class="line">a ends</span><br><span class="line"></span><br><span class="line">b segment</span><br><span class="line">	db 0,0,0,0,0,0,0,0</span><br><span class="line">b ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">	mov ax,a</span><br><span class="line">	mov ds,ax</span><br><span class="line">	</span><br><span class="line">	mov ax,b</span><br><span class="line">	mov ss,ax</span><br><span class="line">	mov sp,16						;把b当成栈结构，指向栈顶</span><br><span class="line">    </span><br><span class="line">    mov bx,0</span><br><span class="line">    mov cx,8						;循环8次</span><br><span class="line">    </span><br><span class="line">s:</span><br><span class="line">	push ds:[bx]</span><br><span class="line">	add bx,2</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov ax,4c00h</span><br><span class="line">	int 21h</span><br><span class="line">	</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<pre class="language-assembly" data-language="assembly"><code class="language-assembly">assume cs:code
+
+a segment
+	db 1,2,3,4,5,6,7,8,9,0ah,0bh,0ch,0dh,0eh,0fh
+a ends
+
+b segment
+	db 0,0,0,0,0,0,0,0
+b ends
+
+code segment
+start:
+	mov ax,a
+	mov ds,ax
+	
+	mov ax,b
+	mov ss,ax
+	mov sp,16						;把b当成栈结构，指向栈顶
+    
+    mov bx,0
+    mov cx,8						;循环8次
+    
+s:
+	push ds:[bx]
+	add bx,2
+	loop s
+	
+	mov ax,4c00h
+	int 21h
+	
+code ends
+end start</code></pre>
 
 <p>程序执行前的a段和b段</p>
 <img src="/2024/04/03/Assembly-Language-Experiment-5/image-20240407111306119.png" class="" title="image-20240407111306119">
 
 <p>程序执行后的a段和b段</p>
 <img src="/2024/04/03/Assembly-Language-Experiment-5/image-20240407111455292.png" class="" title="image-20240407111455292">
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://liquor-vague.github.io">Bag</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://liquor-vague.github.io/2024/04/03/Assembly-Language-Experiment-5/">http://liquor-vague.github.io/2024/04/03/Assembly-Language-Experiment-5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liquor-vague.github.io" target="_blank">BAG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">汇编语言</a></div><div class="post_share"><div class="social-share" data-image="/img/jill.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/04/01/Assembly-Language-Experiment-4/" title="汇编语言实验四"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">汇编语言实验四</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/11/23/Assembly-Language-Experiment-1/" title="汇编语言实验一"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-23</div><div class="title">汇编语言实验一</div></div></a></div><div><a href="/2024/04/01/Assembly-Language-Experiment-4/" title="汇编语言实验四"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-01</div><div class="title">汇编语言实验四</div></div></a></div><div><a href="/2024/01/30/Assembly-Language-Experiment-3/" title="汇编语言实验三"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-30</div><div class="title">汇编语言实验三</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/jill.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Bag</div><div class="author-info__description">A rolling stone gathers no moss.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://liquor-vague.github/"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%881%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">（1）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%882%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">（2）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%883%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">（3）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%884%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">（4）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%885%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">（5）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%886%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">（6）</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/03/Assembly-Language-Experiment-5/" title="王爽《汇编语言》实验五">王爽《汇编语言》实验五</a><time datetime="2024-04-03T08:52:36.000Z" title="发表于 2024-04-03 16:52:36">2024-04-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/01/Assembly-Language-Experiment-4/" title="汇编语言实验四">汇编语言实验四</a><time datetime="2024-04-01T13:36:28.000Z" title="发表于 2024-04-01 21:36:28">2024-04-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/28/2024-ctf-training/" title="2024_ctf_training">2024_ctf_training</a><time datetime="2024-03-28T03:27:48.000Z" title="发表于 2024-03-28 11:27:48">2024-03-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/19/2024-algorithm-learning/" title="2024算法复健">2024算法复健</a><time datetime="2024-03-19T02:22:30.000Z" title="发表于 2024-03-19 10:22:30">2024-03-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/03/encrypt-reverse/" title="逆向中常见加解密算法总结（待更新）">逆向中常见加解密算法总结（待更新）</a><time datetime="2024-03-03T13:20:26.000Z" title="发表于 2024-03-03 21:20:26">2024-03-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By Bag</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://liquor-vague.github.io">Bag</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://liquor-vague.github.io/2024/04/03/Assembly-Language-Experiment-5/">http://liquor-vague.github.io/2024/04/03/Assembly-Language-Experiment-5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://liquor-vague.github.io" target="_blank">BAG</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80/">汇编语言</a></div><div class="post_share"><div class="social-share" data-image="/img/jill.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/04/01/Assembly-Language-Experiment-4/" title="汇编语言实验四"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">汇编语言实验四</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/11/23/Assembly-Language-Experiment-1/" title="汇编语言实验一"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-23</div><div class="title">汇编语言实验一</div></div></a></div><div><a href="/2024/01/30/Assembly-Language-Experiment-3/" title="汇编语言实验三"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-30</div><div class="title">汇编语言实验三</div></div></a></div><div><a href="/2024/04/01/Assembly-Language-Experiment-4/" title="汇编语言实验四"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-01</div><div class="title">汇编语言实验四</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/jill.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Bag</div><div class="author-info__description">A rolling stone gathers no moss.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://liquor-vague.github/"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%881%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">（1）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%882%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">（2）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%883%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">（3）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%884%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">（4）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%885%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">（5）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EF%BC%886%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">（6）</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/03/Assembly-Language-Experiment-5/" title="王爽《汇编语言》实验五">王爽《汇编语言》实验五</a><time datetime="2024-04-03T08:52:36.000Z" title="发表于 2024-04-03 16:52:36">2024-04-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/04/01/Assembly-Language-Experiment-4/" title="汇编语言实验四">汇编语言实验四</a><time datetime="2024-04-01T13:36:28.000Z" title="发表于 2024-04-01 21:36:28">2024-04-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/28/2024-ctf-training/" title="2024_ctf_training">2024_ctf_training</a><time datetime="2024-03-28T03:27:48.000Z" title="发表于 2024-03-28 11:27:48">2024-03-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/19/2024-algorithm-learning/" title="2024算法复健">2024算法复健</a><time datetime="2024-03-19T02:22:30.000Z" title="发表于 2024-03-19 10:22:30">2024-03-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/03/encrypt-reverse/" title="逆向中常见加解密算法总结（待更新）">逆向中常见加解密算法总结（待更新）</a><time datetime="2024-03-03T13:20:26.000Z" title="发表于 2024-03-03 21:20:26">2024-03-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2024 By Bag</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

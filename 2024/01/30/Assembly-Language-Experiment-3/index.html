@@ -163,7 +163,24 @@
 <img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130193959780.png" class="" title="image-20240130193959780">
 
 <p>在edit界面编写.asm文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line">codesg segment</span><br><span class="line">	mov ax,2000H</span><br><span class="line">	mov ss,ax</span><br><span class="line">	mov sp,0</span><br><span class="line">	add sp,10</span><br><span class="line">	pop ax</span><br><span class="line">	pop bx</span><br><span class="line">	push ax</span><br><span class="line">	push bx</span><br><span class="line">	pop ax</span><br><span class="line">	pop bx</span><br><span class="line">	</span><br><span class="line">	mov ax,4c00H</span><br><span class="line">	int 21H</span><br><span class="line">	codesg ends</span><br><span class="line">	</span><br><span class="line">	end</span><br></pre></td></tr></table></figure>
+<pre class="language-asm" data-language="asm"><code class="language-asm">assume cs:codesg
+codesg segment
+	mov ax,2000H
+	mov ss,ax
+	mov sp,0
+	add sp,10
+	pop ax
+	pop bx
+	push ax
+	push bx
+	pop ax
+	pop bx
+	
+	mov ax,4c00H
+	int 21H
+	codesg ends
+	
+	end</code></pre>
 
 <img src="/2024/01/30/Assembly-Language-Experiment-3/image-20240130194232802.png" class="" title="image-20240130194232802">
 
