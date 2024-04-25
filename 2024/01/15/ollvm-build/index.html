@@ -155,56 +155,39 @@
       detectApple()
     })(window)</script><link rel="stylesheet" href="/css/modify.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/jill.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Posts</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/links"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="BAG"><span class="site-name">BAG</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Posts</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/links"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">OLLVM混淆环境搭建与去平坦化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-01-15T05:45:55.000Z" title="发表于 2024-01-15 13:45:55">2024-01-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-04-07T09:27:49.229Z" title="更新于 2024-04-07 17:27:49">2024-04-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/ctf/">ctf</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="OLLVM混淆环境搭建与去平坦化"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>OLLVM混淆环境搭建与去平坦化简单指北</p>
 <span id="more"></span>
-
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>vmware虚拟机，ubuntu20.04</p>
-<h2 id="ollvm定义"><a href="#ollvm定义" class="headerlink" title="ollvm定义"></a>ollvm定义</h2><p>​		LLVM（Low Level Virtual Machine）是一个开源的编译器基础架构，它包含了一组模块化、可重用的编译器和工具，支持多种编程语言和目标架构，包括x86、ARM和MIPS等。LLVM的核心思想是将编译器分为前端和后端两个部分，前端负责将源代码转换为中间表示（IR），后端负责将中间表示转换为目标机器的汇编代码。这种设计使得LLVM可以支持多种编程语言，因为只需要为每种语言编写一个前端，就可以利用后端的通用性支持多种目标架构。</p>
-<p>​		OLLVM（Obfuscator-LLVM）是瑞士西北应用科技大学安全实验室于2010年6月份发起的一个项目，这个项目的目标是提供一个LLVM编译套件的开源分支，能够通过代码混淆和防篡改，所使用的编译器是clang。</p>
+<h2 id="ollvm定义"><a href="#ollvm定义" class="headerlink" title="ollvm定义"></a>ollvm定义</h2><p>​        LLVM（Low Level Virtual Machine）是一个开源的编译器基础架构，它包含了一组模块化、可重用的编译器和工具，支持多种编程语言和目标架构，包括x86、ARM和MIPS等。LLVM的核心思想是将编译器分为前端和后端两个部分，前端负责将源代码转换为中间表示（IR），后端负责将中间表示转换为目标机器的汇编代码。这种设计使得LLVM可以支持多种编程语言，因为只需要为每种语言编写一个前端，就可以利用后端的通用性支持多种目标架构。</p>
+<p>​        OLLVM（Obfuscator-LLVM）是瑞士西北应用科技大学安全实验室于2010年6月份发起的一个项目，这个项目的目标是提供一个LLVM编译套件的开源分支，能够通过代码混淆和防篡改，所使用的编译器是clang。</p>
 <h2 id="搭建ollvm环境"><a href="#搭建ollvm环境" class="headerlink" title="搭建ollvm环境"></a>搭建ollvm环境</h2><p>ollvm github仓库</p>
 <pre class="line-numbers language-none"><code class="language-none">https:&#x2F;&#x2F;github.com&#x2F;obfuscator-llvm&#x2F;obfuscator<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <h3 id="git下载ollvm源码"><a href="#git下载ollvm源码" class="headerlink" title="git下载ollvm源码"></a>git下载ollvm源码</h3><pre class="line-numbers language-git" data-language="git"><code class="language-git">git clone -b llvm-4.0 --depth=1 https://github.com/obfuscator-llvm/obfuscator.git <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <h3 id="配置编译工具"><a href="#配置编译工具" class="headerlink" title="配置编译工具"></a>配置编译工具</h3><pre class="line-numbers language-none"><code class="language-none">cmake , gcc , g++<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <h4 id="cmake"><a href="#cmake" class="headerlink" title="cmake"></a>cmake</h4><p>去官网下载<a target="_blank" rel="noopener" href="https://cmake.org/download/">cmake</a>或者直接sudo安装</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> cmake<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <h4 id="安装-gcc-8-g-8-降低版本"><a href="#安装-gcc-8-g-8-降低版本" class="headerlink" title="安装 gcc-8 g++-8 降低版本"></a>安装 gcc-8 g++-8 降低版本</h4><p>查看gcc和g++版本，若为9则要降低版本</p>
 <img src="/2024/01/15/ollvm-build/image-20240113195643948.png" class="" title="image-20240113195643948">
-
 <h5 id="安装gcc-8和g-8"><a href="#安装gcc-8和g-8" class="headerlink" title="安装gcc-8和g++-8"></a>安装gcc-8和g++-8</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> gcc-8 g++-8 <span class="token parameter variable">-y</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>配置软件的优先级，可以根据需要去选择默认的版本</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> update-alternatives <span class="token parameter variable">--install</span> /usr/bin/gcc gcc /usr/bin/gcc-8 <span class="token number">8</span>
 <span class="token function">sudo</span> update-alternatives <span class="token parameter variable">--install</span> /usr/bin/g++ g++ /usr/bin/g++-8 <span class="token number">8</span>
 <span class="token function">sudo</span> update-alternatives <span class="token parameter variable">--install</span> /usr/bin/gcc gcc /usr/bin/gcc-9 <span class="token number">9</span>
 <span class="token function">sudo</span> update-alternatives <span class="token parameter variable">--install</span> /usr/bin/g++ g++ /usr/bin/g++-9 <span class="token number">9</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
 <h5 id="gcc切换版本-默认gcc-8"><a href="#gcc切换版本-默认gcc-8" class="headerlink" title="gcc切换版本 默认gcc 8"></a>gcc切换版本 默认gcc 8</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> update-alternatives <span class="token parameter variable">--config</span> gcc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>输入选择版本的数字</p>
 <img src="/2024/01/15/ollvm-build/image-20240113200022936.png" class="" title="image-20240113200022936">
-
 <h5 id="g-切换版本-默认g-8"><a href="#g-切换版本-默认g-8" class="headerlink" title="g++切换版本 默认g++ 8"></a>g++切换版本 默认g++ 8</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> update-alternatives <span class="token parameter variable">--config</span> g++<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <img src="/2024/01/15/ollvm-build/image-20240113200225611.png" class="" title="image-20240113200225611">
-
-<h3 id="修改ollvm源码"><a href="#修改ollvm源码" class="headerlink" title="修改ollvm源码"></a>修改ollvm源码</h3><p>进入 ollvm目录&#x2F;include&#x2F;llvm&#x2F;ExecutionEngine&#x2F;Orc&#x2F;OrcRemoteTargetClient.h</p>
+<h3 id="修改ollvm源码"><a href="#修改ollvm源码" class="headerlink" title="修改ollvm源码"></a>修改ollvm源码</h3><p>进入 ollvm目录/include/llvm/ExecutionEngine/Orc/OrcRemoteTargetClient.h</p>
 <p>定位到第690行 把char 改成 uint_8t</p>
 <p>在<code>config.guess</code>文件中存在一些DOS行结尾(DOS line endings)，需要将其转换为Unix行结尾。</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> dos2unix
 dos2unix obfuscator/cmake/config.guess<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
 <img src="/2024/01/15/ollvm-build/image-20240114123645849.png" class="" title="image-20240114123645849">
-
 <h3 id="编译-ollvm"><a href="#编译-ollvm" class="headerlink" title="编译 ollvm"></a>编译 ollvm</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">mkdir</span> build
 <span class="token builtin class-name">cd</span> build
 cmake <span class="token parameter variable">-DCMAKE_BUILD_TYPE</span><span class="token operator">=</span>Release <span class="token parameter variable">-DLLVM_INCLUDE_TESTS</span><span class="token operator">=</span>OFF <span class="token punctuation">..</span>/obfuscator/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <img src="/2024/01/15/ollvm-build/image-20240114124017851.png" class="" title="image-20240114124017851">
-
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">make</span> <span class="token parameter variable">-j4</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>这个过程会很久</p>
 <pre class="line-numbers language-none"><code class="language-none">[ 97%] Built target llvm-objdump
 [ 97%] Linking CXX executable ..&#x2F;..&#x2F;bin&#x2F;llvm-mc
@@ -214,40 +197,29 @@ cmake <span class="token parameter variable">-DCMAKE_BUILD_TYPE</span><span clas
 [ 97%] Built target llvm-dwp
 [ 97%] Built target llvm-lto2
 make: *** [Makefile:152: all] Error 2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>可能是环境配置出了问题，编译到97%时就停止了，几个主要的clang文件都没编译成功</p>
 <p>试了好几次都卡在这个</p>
 <img src="/2024/01/15/ollvm-build/image-20240114173753408.png" class="" title="image-20240114173753408">
-
 <p>查阅资料，猜测是swap区空间不够，增加swap区空间为4g，扩大虚拟机容量为60g</p>
 <p><strong>如果卡住了，不要慌，不要删，继续<code>make -j</code></strong></p>
 <img src="/2024/01/15/ollvm-build/image-20240114232004689.png" class="" title="image-20240114232004689">
-
 <h3 id="混淆"><a href="#混淆" class="headerlink" title="混淆"></a>混淆</h3><p>两种方法，一种是配置ndk环境混淆，另一种是直接将clang作为程序进行混淆。推荐第二种，第一种无法控制混淆的方法。</p>
 <p><strong>注意，混淆时一定要采用gcc8和g++8，9以上的环境会混淆失败。</strong></p>
 <h4 id="配置ndk环境"><a href="#配置ndk环境" class="headerlink" title="配置ndk环境"></a>配置ndk环境</h4><p>执行命令，打开配置文件</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gedit ~/.bashrc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>把下面这两行粘贴到文件末尾， 注意，替换路径成自己下载的ndk路径</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">export</span> <span class="token assign-left variable">NDK_HOME</span><span class="token operator">=</span>/home/bag/android/android-ndk-r16b/
 <span class="token builtin class-name">export</span> <span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span><span class="token variable">$NDK_HOME</span><span class="token builtin class-name">:</span><span class="token environment constant">$PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
 <p>最后执行命令，使配置文件生效</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">source</span> ~/.bashrc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <h5 id="复制编译好的4个-clang-文件到ndk目录"><a href="#复制编译好的4个-clang-文件到ndk目录" class="headerlink" title="复制编译好的4个 clang 文件到ndk目录"></a>复制编译好的4个 clang 文件到ndk目录</h5><p>clang，clang++，clang-4.0，clang-format</p>
 <p>粘贴到ndk目录</p>
 <pre class="line-numbers language-none"><code class="language-none">ndk目录&#x2F;toolchains&#x2F;llvm&#x2F;prebuilt&#x2F;linux-x86_64&#x2F;bin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <h5 id="复制build目录的-3个头文件到ndk目录"><a href="#复制build目录的-3个头文件到ndk目录" class="headerlink" title="复制build目录的 3个头文件到ndk目录"></a>复制build目录的 3个头文件到ndk目录</h5><pre class="line-numbers language-none"><code class="language-none">fatal error &#39;Stddef.h&#39; file not found
 fatal error &#39;Stdarg.h&#39; file not found
 fatal error &#39;__stddef_max_align_t.h&#39; file not found<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p>ndk目录</p>
 <pre class="line-numbers language-none"><code class="language-none">home&#x2F;bag&#x2F;android&#x2F;android-ndk-r16b&#x2F;sources&#x2F;cxx-stl&#x2F;system&#x2F;include<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-
-
 <p>新建jni文件夹（名字改了的话在对应的配置文件得该指定路径方式）</p>
 <p>在文件夹中新建<code>Android.mk</code>，<code>Application.mk</code>，<code>try.cpp</code></p>
 <p>Android.mk</p>
@@ -259,12 +231,10 @@ LOCAL_MODULE :&#x3D; bag
 LOCAL_SRC_FILES :&#x3D; try.cpp
 
 include $(BUILD_EXECUTABLE)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>Application.mk</p>
 <pre class="line-numbers language-none"><code class="language-none">APP_ABI :&#x3D; armeabi-v7a arm64-v8a
 APP_PIE :&#x3D; true
 APP_CPPFLAGS :&#x3D; -frtti -std&#x3D;c++11 -mllvm -fla -mllvm -bcf -mllvm -sub<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p>try.cpp</p>
 <pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;cstdio></span></span>
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -276,78 +246,50 @@ APP_CPPFLAGS :&#x3D; -frtti -std&#x3D;c++11 -mllvm -fla -mllvm -bcf -mllvm -sub<
   <span class="token keyword">else</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"not 1 or 2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>在jni的上级路径，输入ndk-build</p>
 <img src="/2024/01/15/ollvm-build/image-20240115000808138.png" class="" title="image-20240115000808138">
-
 <p>成功了！</p>
 <p>混淆后的文件在libs内</p>
 <img src="/2024/01/15/ollvm-build/image-20240115105209708.png" class="" title="image-20240115105209708">
-
 <p>在ida中查看混淆效果</p>
 <img src="/2024/01/15/ollvm-build/image-20240115105259783.png" class="" title="image-20240115105259783">
-
-
-
 <h4 id="clang混淆"><a href="#clang混淆" class="headerlink" title="clang混淆"></a>clang混淆</h4><p>这里对源文件进行<strong>平坦化混淆</strong>处理。</p>
-<p>来到build&#x2F;bin目录下，将待混淆的源文件放在该目录下。</p>
+<p>来到build/bin目录下，将待混淆的源文件放在该目录下。</p>
 <p>命令格式为</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./clang <span class="token parameter variable">-mllvm</span> <span class="token parameter variable">-fla</span> 源文件 <span class="token parameter variable">-o</span> 目标文件<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./clang <span class="token parameter variable">-mllvm</span> <span class="token parameter variable">-fla</span> try.cpp <span class="token parameter variable">-o</span> try<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>成功生成混淆后的文件，用ida查看效果</p>
 <img src="/2024/01/15/ollvm-build/image-20240115132134904.png" class="" title="image-20240115132134904">
-
-
-
 <h2 id="去平坦化"><a href="#去平坦化" class="headerlink" title="去平坦化"></a>去平坦化</h2><h3 id="虚拟环境"><a href="#虚拟环境" class="headerlink" title="虚拟环境"></a>虚拟环境</h3><p>安装虚拟环境</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> virtualenv<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>配置环境变量</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">export</span> <span class="token assign-left variable">WORKON_HOME</span><span class="token operator">=</span><span class="token environment constant">$HOME</span>/.virtualenvs
 <span class="token builtin class-name">export</span> <span class="token assign-left variable">PROJECT_HOME</span><span class="token operator">=</span><span class="token environment constant">$HOME</span>/workspace
 <span class="token builtin class-name">source</span> /usr/local/bin/virtualenvwrapper.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p>打开虚拟环境</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">source</span> ~/.local/bin/virtualenvwrapper.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>创建新的虚拟环境</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mkvirtualenv demo<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>展示当前虚拟环境</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">workon<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>进入虚拟环境</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">workon demo<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <h3 id="使用脚本"><a href="#使用脚本" class="headerlink" title="使用脚本"></a>使用脚本</h3><p>由于脚本需要angr，在当前虚拟环境中安装</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">pip <span class="token function">install</span> angr<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>脚本github地址：<a target="_blank" rel="noopener" href="https://github.com/cq674350529/deflat">deflat: use angr to deobfuscation </a></p>
 <p>将脚本中的<code>am_graph.py</code>和<code>util.py</code>文件复制到下级</p>
 <img src="/2024/01/15/ollvm-build/image-20240115113143066.png" class="" title="image-20240115113143066">
-
-
-
 <p>在ida中找到平坦化的入口地址，一般而言入口前都会存在大量var_（局部变量），下图入口地址为0x401140</p>
 <img src="/2024/01/15/ollvm-build/image-20240115132230565.png" class="" title="image-20240115132230565">
-
 <p>去平坦化命令格式为</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python3 deflat.py <span class="token parameter variable">-f</span> filename <span class="token parameter variable">--addr</span> address（入口地址，一般为main入口）<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python3 deflat.py <span class="token parameter variable">-f</span> try <span class="token parameter variable">--addr</span> 0x401140<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <img src="/2024/01/15/ollvm-build/image-20240115132332941.png" class="" title="image-20240115132332941">
-
 <img src="/2024/01/15/ollvm-build/image-20240115132452335.png" class="" title="image-20240115132452335">
-
 <p>去平坦化成功后，会在当前目录下生成<code>源文件_recovered</code></p>
 <img src="/2024/01/15/ollvm-build/image-20240115132612816.png" class="" title="image-20240115132612816">
-
 <p>在ida中查看去平坦化后效果</p>
 <img src="/2024/01/15/ollvm-build/image-20240115132654105.png" class="" title="image-20240115132654105">
-
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
 <li><p>定位入口地址</p>
 </li>
@@ -357,7 +299,8 @@ workon
 workon demo<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>使用去平坦化命令</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python3 deflat.py <span class="token parameter variable">-f</span> filename <span class="token parameter variable">--addr</span> address（入口地址，一般为main入口）<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python3 deflat.py <span class="token parameter variable">-f</span> filename <span class="token parameter variable">--addr</span> address（入口地址，一般为main入口）<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
 </ol>
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_51732593/article/details/126707046">OLLVM环境搭建-Ubuntu20.04_ubuntu配置llvm-CSDN博客</a></li>
